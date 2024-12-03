@@ -1,0 +1,42 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+#issueTrackerURL = ""
+license = "All Rights Reserved"
+
+[[mods]]
+modId = "slurpbags"
+version = "${version}"
+displayName = "Slurp Bags"
+authors = ""
+description = '''
+
+'''
+#logoFile = ""
+
+[[dependencies.slurpbags]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.slurpbags]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.slurpbags]]
+modId = "architectury"
+mandatory = true
+versionRange = "[9.2.14,)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.slurpbags]]
+modId = "shulkerboxtooltip"
+mandatory = false
+versionRange = "[4.0.4,)"
+ordering = "NONE"
+side = "BOTH"
