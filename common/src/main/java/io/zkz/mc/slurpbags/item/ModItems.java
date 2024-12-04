@@ -13,7 +13,7 @@ import java.util.Map;
 public class ModItems {
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(SlurpBags.MOD_ID, Registries.ITEM);
 
-    public static Map<BagType, RegistrySupplier<Item>> BAG_ITEMS = new EnumMap<>(BagType.class);
+    public static Map<BagType, RegistrySupplier<SlurpBagItem>> BAG_ITEMS = new EnumMap<>(BagType.class);
 
     public static void register() {
         for (BagType type : BagType.values()) {
@@ -24,7 +24,7 @@ public class ModItems {
     }
 
     @ExpectPlatform
-    private static Item makeBagItem(BagType type) {
+    private static SlurpBagItem makeBagItem(BagType type) {
         throw new AssertionError("@ExpectPlatform for makeBagItem failed");
     }
 }

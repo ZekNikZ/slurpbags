@@ -16,7 +16,6 @@ public enum BagType implements StringRepresentable {
     SEED("seed"),
     FLOWER("flower"),
     DYE("dye"),
-    QUIVER("quiver"),
     POTION("potion"),
     SAPLING("sapling"),
     LEAF("leaf");
@@ -36,8 +35,12 @@ public enum BagType implements StringRepresentable {
         // TODO: config value
         return switch (this) {
             case SEED, FLOWER, SAPLING, LEAF -> 3;
-            case DYE, QUIVER, POTION -> 2;
+            case DYE, POTION -> 2;
         };
+    }
+
+    public SlurpBagItem getItem() {
+        return ModItems.BAG_ITEMS.get(this).get();
     }
 
     public MenuType<SlurpBagMenu> getMenuType() {

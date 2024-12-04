@@ -5,8 +5,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class SlurpBagItem extends io.zkz.mc.slurpbags.item.SlurpBagItem {
-    public SlurpBagItem(BagType type) {
+public class SlurpBagItemFabric extends io.zkz.mc.slurpbags.item.SlurpBagItem {
+    public SlurpBagItemFabric(BagType type) {
         super(type);
     }
 

@@ -14,6 +14,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -42,7 +43,7 @@ public class SlurpBagItem extends Item {
         if (player.isSecondaryUseActive()) {
             // Shift-click = rotate mode
             rotateMode(itemInHand);
-            player.displayClientMessage(Component.translatable("notification.slurpbags.new_mode").append(" ").append(Component.literal(getMode(itemInHand).getSerializedName()).withStyle(ChatFormatting.GREEN)), true);
+            player.displayClientMessage(Component.translatable("notification.slurpbags.new_slurp_mode").withStyle(ChatFormatting.GRAY).append(" ").append(Component.translatable("itemTooltip.slurpbags.slurp_mode." + getMode(itemInHand).getSerializedName()).withStyle(getMode(itemInHand).getChatColor())), true);
             player.playSound(SoundEvents.NOTE_BLOCK_HAT.value(), 0.8F, 0.8F + level.getRandom().nextFloat() * 0.4F);
         } else {
             // Non-shift click = open menu
@@ -50,6 +51,7 @@ public class SlurpBagItem extends Item {
                 player.openMenu(this.getMenuProvider(itemInHand));
                 player.awardStat(Stats.ITEM_USED.get(this));
                 this.lockMySlot(player, itemInHand);
+                open(itemInHand);
             }
             player.playSound(SoundEvents.BUNDLE_DROP_CONTENTS, 0.8F, 0.8F + level.getRandom().nextFloat() * 0.4F);
         }
@@ -104,6 +106,26 @@ public class SlurpBagItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag tooltipFlag) {
-        tooltip.add(Component.translatable("itemTooltip.slurpbags.slurpMode").withStyle(ChatFormatting.GRAY).append(" ").append(Component.literal(getMode(itemStack).getSerializedName()).withStyle(ChatFormatting.GREEN)));
+        tooltip.add(Component.translatable("itemTooltip.slurpbags.slurp_mode").withStyle(ChatFormatting.GRAY).append(" ").append(Component.translatable("itemTooltip.slurpbags.slurp_mode." + getMode(itemStack).getSerializedName()).withStyle(getMode(itemStack).getChatColor())));
+    }
+
+    public boolean isOpen(ItemStack stack) {
+        return stack.getOrCreateTag().getInt("CustomModelData") == 1;
+    }
+
+    public void open(ItemStack stack) {
+        stack.getOrCreateTag().putInt("CustomModelData", 1);
+    }
+
+    public void close(ItemStack stack) {
+        stack.getOrCreateTag().putInt("CustomModelData", 0);
+    }
+
+    public static void closeBags(Player player) {
+        player.getInventory().items.forEach(stack -> {
+            if (stack.getItem() instanceof SlurpBagItem bagItem) {
+                bagItem.close(stack);
+            }
+        });
     }
 }

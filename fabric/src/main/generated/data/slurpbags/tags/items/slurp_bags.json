@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "slurpbags:seed_bag",
+    "slurpbags:flower_bag",
+    "slurpbags:dye_bag",
+    "slurpbags:potion_bag",
+    "slurpbags:sapling_bag",
+    "slurpbags:leaf_bag"
+  ]
+}

@@ -4,6 +4,7 @@ import io.zkz.mc.slurpbags.SlurpBags;
 import dev.architectury.platform.forge.EventBuses;
 import io.zkz.mc.slurpbags.client.screen.ModScreens;
 import io.zkz.mc.slurpbags.compat.ShulkerBoxTooltipCompat;
+import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;

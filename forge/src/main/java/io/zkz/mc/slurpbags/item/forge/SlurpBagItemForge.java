@@ -3,8 +3,8 @@ package io.zkz.mc.slurpbags.item.forge;
 import io.zkz.mc.slurpbags.item.BagType;
 import net.minecraft.world.item.ItemStack;
 
-public class SlurpBagItem extends io.zkz.mc.slurpbags.item.SlurpBagItem {
-    public SlurpBagItem(BagType type) {
+public class SlurpBagItemForge extends io.zkz.mc.slurpbags.item.SlurpBagItem {
+    public SlurpBagItemForge(BagType type) {
         super(type);
     }
 

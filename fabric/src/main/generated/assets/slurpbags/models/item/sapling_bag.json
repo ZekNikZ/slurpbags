@@ -1,0 +1,15 @@
+{
+  "parent": "slurpbags:item/slurp_bag",
+  "overrides": [
+    {
+      "model": "slurpbags:item/sapling_bag_open",
+      "predicate": {
+        "custom_model_data": 1
+      }
+    }
+  ],
+  "textures": {
+    "bag": "slurpbags:item/bag",
+    "band": "slurpbags:item/sapling_band"
+  }
+}

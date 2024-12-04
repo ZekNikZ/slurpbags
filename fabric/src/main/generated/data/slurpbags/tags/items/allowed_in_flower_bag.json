@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#minecraft:flowers",
+      "required": false
+    },
+    {
+      "id": "#c:flowers",
+      "required": false
+    },
+    {
+      "id": "#forge:flowers",
+      "required": false
+    }
+  ]
+}

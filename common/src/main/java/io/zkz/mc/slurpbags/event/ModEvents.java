@@ -2,17 +2,20 @@ package io.zkz.mc.slurpbags.event;
 
 import dev.architectury.event.events.common.PlayerEvent;
 import io.zkz.mc.slurpbags.inventory.SlurpBagInventory;
+import io.zkz.mc.slurpbags.inventory.SlurpBagMenu;
 import io.zkz.mc.slurpbags.item.BagMode;
 import io.zkz.mc.slurpbags.item.SlurpBagItem;
 import io.zkz.mc.slurpbags.util.InventoryUtils;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 
 public class ModEvents {
     public static void register() {
         PlayerEvent.PICKUP_ITEM_POST.register(ModEvents::onPickupItem);
+        PlayerEvent.CLOSE_MENU.register(ModEvents::closeMenu);
     }
 
     private static void onPickupItem(Player player, ItemEntity itemEntity, ItemStack itemStack) {
@@ -48,6 +51,12 @@ public class ModEvents {
             if (!stackToInsert.isEmpty()) {
                 playerInventory.add(stackToInsert);
             }
+        }
+    }
+
+    private static void closeMenu(Player player, AbstractContainerMenu menu) {
+        if (menu instanceof SlurpBagMenu) {
+            SlurpBagItem.closeBags(player);
         }
     }
 }

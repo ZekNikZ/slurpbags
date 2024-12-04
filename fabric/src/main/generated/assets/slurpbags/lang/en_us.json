@@ -1,0 +1,14 @@
+{
+  "item.slurpbags.dye_bag": "Dye Bag",
+  "item.slurpbags.flower_bag": "Flower Bag",
+  "item.slurpbags.leaf_bag": "Leaf Bag",
+  "item.slurpbags.potion_bag": "Potion Bag",
+  "item.slurpbags.sapling_bag": "Sapling Bag",
+  "item.slurpbags.seed_bag": "Seed Bag",
+  "itemGroup.slurpbags.main": "Slurp Bags",
+  "itemTooltip.slurpbags.slurp_mode": "Slurp Mode:",
+  "itemTooltip.slurpbags.slurp_mode.SLURP_ALWAYS": "Always",
+  "itemTooltip.slurpbags.slurp_mode.SLURP_DISABLED": "Disabled",
+  "itemTooltip.slurpbags.slurp_mode.SLURP_ON_PICKUP": "Pickup",
+  "notification.slurpbags.new_slurp_mode": "New Slurp Mode:"
+}
