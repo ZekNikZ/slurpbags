@@ -1,0 +1,7 @@
+{
+  "parent": "slurpbags:item/slurp_bag",
+  "textures": {
+    "bag": "slurpbags:item/pink_bag_open",
+    "band": "slurpbags:item/sapling_band_open"
+  }
+}

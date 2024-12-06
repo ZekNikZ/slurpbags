@@ -8,29 +8,33 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class SlurpBagMenu extends AbstractContainerMenu {
     private final Container container;
     private final BagType bagType;
+    private final @Nullable DyeColor bagColor;
     private int hotbarStartIndex;
 
-    public static MenuType.MenuSupplier<SlurpBagMenu> create(BagType type) {
-        return (containerId, inventory) -> new SlurpBagMenu(type, containerId, inventory);
+    public static MenuType.MenuSupplier<SlurpBagMenu> create(BagType type, @Nullable DyeColor color) {
+        return (containerId, inventory) -> new SlurpBagMenu(type, color, containerId, inventory);
     }
 
-    private SlurpBagMenu(BagType type, int containerId, Inventory inventory) {
-        this(type, containerId, inventory, new SimpleContainer(type.getInventoryRowCount() * 9));
+    private SlurpBagMenu(BagType type, @Nullable DyeColor color, int containerId, Inventory inventory) {
+        this(type, color, containerId, inventory, new SimpleContainer(type.getInventoryRowCount() * 9));
     }
 
-    public SlurpBagMenu(BagType type, int containerId, Inventory inventory, Container container) {
-        super(type.getMenuType(), containerId);
+    public SlurpBagMenu(BagType type, @Nullable DyeColor color, int containerId, Inventory inventory, Container container) {
+        super(type.getMenuType(color), containerId);
 
         int rowCount = type.getInventoryRowCount();
         checkContainerSize(container, rowCount * 9);
         this.container = container;
         this.bagType = type;
+        this.bagColor = color;
         container.startOpen(inventory.player);
         int i = (rowCount - 4) * 18;
 
@@ -90,7 +94,7 @@ public class SlurpBagMenu extends AbstractContainerMenu {
     @Override
     public void removed(@NotNull Player player) {
         super.removed(player);
-        this.container.stopOpen(player);
+        this.container.stopOpen(player); // TODO: use this to close the bag model instead of the event listener
     }
 
     public int getInventoryRowCount() {
@@ -99,5 +103,15 @@ public class SlurpBagMenu extends AbstractContainerMenu {
 
     public int getHotbarStartIndex() {
         return this.hotbarStartIndex;
+    }
+
+    public static void updateIfMenuOpen(Player player) {
+        if (player.hasContainerOpen() && player.containerMenu instanceof SlurpBagMenu menu && menu.container instanceof SlurpBagContainer slurpBagContainer) {
+            slurpBagContainer.loadFromStack();
+        }
+    }
+
+    public @Nullable DyeColor getColor() {
+        return this.bagColor;
     }
 }

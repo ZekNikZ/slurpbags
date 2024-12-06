@@ -1,6 +1,7 @@
 package io.zkz.mc.slurpbags.inventory;
 
 import io.zkz.mc.slurpbags.item.BagType;
+import io.zkz.mc.slurpbags.item.SlurpBagItem;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -11,14 +12,21 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SlurpBagInventory implements WorldlyContainer {
+// TODO: rewrite to function more like SimpleContainer
+public class SlurpBagContainer implements WorldlyContainer {
     private final ItemStack stack;
+    private final SlurpBagItem item;
     private final NonNullList<ItemStack> items;
 
-    public SlurpBagInventory(ItemStack stack, BagType type) {
+    public SlurpBagContainer(ItemStack stack, BagType type) {
         this.stack = stack;
+        this.item = (SlurpBagItem) stack.getItem();
         this.items = NonNullList.withSize(type.getInventoryRowCount() * 9, ItemStack.EMPTY);
-        CompoundTag tag = stack.getTag();
+        this.loadFromStack();
+    }
+
+    public void loadFromStack() {
+        CompoundTag tag = this.stack.getTag();
         if (tag != null) {
             ContainerHelper.loadAllItems(tag, items);
         }
@@ -44,12 +52,12 @@ public class SlurpBagInventory implements WorldlyContainer {
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, @NotNull ItemStack stack, @Nullable Direction dir) {
-        return true;
+        return this.item.mayContain(stack);
     }
 
     @Override
     public boolean canTakeItemThroughFace(int slot, @NotNull ItemStack stack, @NotNull Direction dir) {
-        return true;
+        return this.item.mayContain(stack);
     }
 
     @Override
@@ -109,5 +117,30 @@ public class SlurpBagInventory implements WorldlyContainer {
     @Override
     public void clearContent() {
         getItems().clear();
+    }
+
+    public boolean insertItem(ItemStack stackToInsert) {
+        if (!this.item.mayContain(stackToInsert)) {
+            return false;
+        }
+
+        boolean didInsertSome = false;
+        for (int bagSlotIndex = 0; bagSlotIndex < getContainerSize(); bagSlotIndex++) {
+            ItemStack stackInBagSlot = getItem(bagSlotIndex);
+            if (stackInBagSlot.isEmpty()) {
+                setItem(bagSlotIndex, stackToInsert.copy());
+                stackToInsert.setCount(0);
+                didInsertSome = true;
+            } else if (stackInBagSlot.getCount() < stackInBagSlot.getMaxStackSize() && ItemStack.isSameItemSameTags(stackInBagSlot, stackToInsert)) {
+                int amountThatCanBeInserted = (stackInBagSlot.getMaxStackSize() - stackInBagSlot.getCount());
+                int amountToInsert = Math.min(amountThatCanBeInserted, stackToInsert.getCount());
+                stackInBagSlot.grow(amountToInsert);
+                stackToInsert.shrink(amountToInsert);
+                didInsertSome = true;
+            }
+        }
+        setChanged();
+
+        return didInsertSome;
     }
 }

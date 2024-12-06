@@ -1,8 +1,11 @@
-// 1.20.1	2024-12-03T23:53:56.171296	Slurp Bags/Tags for minecraft:item
-b0d7b864178ea807b88375a4182d708154a5eb15 data\slurpbags\tags\items\allowed_in_seed_bag.json
-51d8cb27531c0654619599f3b620c9afb2728072 data\slurpbags\tags\items\not_allowed_in_seed_bag.json
-3239472f6605dfadfe1577b0e4b32795630131f7 data\slurpbags\tags\items\allowed_in_flower_bag.json
-51d8cb27531c0654619599f3b620c9afb2728072 data\slurpbags\tags\items\not_allowed_in_flower_bag.json
+// 1.20.1	2024-12-05T21:10:08.0197513	Slurp Bags/Tags for minecraft:item
+51d8cb27531c0654619599f3b620c9afb2728072 data\slurpbags\tags\items\dye_bag_blacklist.json
+3239472f6605dfadfe1577b0e4b32795630131f7 data\slurpbags\tags\items\flower_bag_whitelist.json
+51d8cb27531c0654619599f3b620c9afb2728072 data\slurpbags\tags\items\leaf_bag_blacklist.json
+51d8cb27531c0654619599f3b620c9afb2728072 data\slurpbags\tags\items\flower_bag_blacklist.json
+7810015716d3e272703dcaa35b0bc564bf1a68fc data\slurpbags\tags\items\dye_bag_whitelist.json
 a661690aa1b8c883539dd875b49c20f18f4d0cdf data\slurpbags\tags\items\slurp_bags.json
-51d8cb27531c0654619599f3b620c9afb2728072 data\slurpbags\tags\items\not_allowed_in_dye_bag.json
-7810015716d3e272703dcaa35b0bc564bf1a68fc data\slurpbags\tags\items\allowed_in_dye_bag.json
+51d8cb27531c0654619599f3b620c9afb2728072 data\slurpbags\tags\items\sapling_bag_blacklist.json
+51d8cb27531c0654619599f3b620c9afb2728072 data\slurpbags\tags\items\seed_bag_blacklist.json
+51d8cb27531c0654619599f3b620c9afb2728072 data\slurpbags\tags\items\potion_bag_blacklist.json
+b0d7b864178ea807b88375a4182d708154a5eb15 data\slurpbags\tags\items\seed_bag_whitelist.json

@@ -8,6 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -43,8 +44,15 @@ public enum BagType implements StringRepresentable {
         return ModItems.BAG_ITEMS.get(this).get();
     }
 
-    public MenuType<SlurpBagMenu> getMenuType() {
-        return ModMenus.BAG_MENUS.get(this).get();
+    public SlurpBagItem getItem(DyeColor color) {
+        return ModItems.DYED_BAG_ITEMS.get(this).get(color).get();
+    }
+
+    public MenuType<SlurpBagMenu> getMenuType(DyeColor color) {
+        if (color == null) {
+            return ModMenus.BAG_MENUS.get(this).get();
+        }
+        return ModMenus.DYED_BAG_MENUS.get(this).get(color).get();
     }
 
     public boolean mayContain(ItemStack itemStack) {

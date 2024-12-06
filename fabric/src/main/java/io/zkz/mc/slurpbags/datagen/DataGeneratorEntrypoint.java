@@ -10,5 +10,6 @@ public class DataGeneratorEntrypoint implements net.fabricmc.fabric.api.datagen.
         pack.addProvider(ItemTagGenerator::new);
         pack.addProvider(EnglishLangGenerator::new);
         pack.addProvider(ModelGenerator::new);
+        pack.addProvider(RecipeGenerator::new);
     }
 }

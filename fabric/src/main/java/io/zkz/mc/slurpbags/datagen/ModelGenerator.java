@@ -6,6 +6,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.models.BlockModelGenerators;
 import net.minecraft.data.models.ItemModelGenerators;
+import net.minecraft.world.item.DyeColor;
 
 public class ModelGenerator extends FabricModelProvider {
     public ModelGenerator(FabricDataOutput output) {
@@ -23,6 +24,9 @@ public class ModelGenerator extends FabricModelProvider {
 
         for (BagType type : BagType.values()) {
             SlurpBagModel.create(type.getItem(), generators.output);
+            for (DyeColor color : DyeColor.values()) {
+                SlurpBagModel.create(type.getItem(color), generators.output);
+            }
         }
     }
 }

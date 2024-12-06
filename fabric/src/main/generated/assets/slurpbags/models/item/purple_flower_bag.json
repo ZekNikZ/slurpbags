@@ -1,0 +1,15 @@
+{
+  "parent": "slurpbags:item/slurp_bag",
+  "overrides": [
+    {
+      "model": "slurpbags:item/purple_flower_bag_open",
+      "predicate": {
+        "custom_model_data": 1
+      }
+    }
+  ],
+  "textures": {
+    "bag": "slurpbags:item/purple_bag",
+    "band": "slurpbags:item/flower_band"
+  }
+}

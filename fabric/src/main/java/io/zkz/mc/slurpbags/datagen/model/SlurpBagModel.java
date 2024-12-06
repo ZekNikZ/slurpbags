@@ -26,7 +26,7 @@ public class SlurpBagModel {
     }
 
     public static void create(SlurpBagItem item, BiConsumer<ResourceLocation, Supplier<JsonElement>> output) {
-        output.accept(SlurpBags.id("item/" + item.getType().getName() + "_bag"), () -> {
+        output.accept(SlurpBags.id(getBagName(item, false)), () -> {
             JsonObject modelObj = buildBase(item, false);
             {
                 JsonArray overridesObj = new JsonArray();
@@ -37,7 +37,7 @@ public class SlurpBagModel {
                         predicateObj.addProperty("custom_model_data", 1);
                         overrideObj.add("predicate", predicateObj);
                     }
-                    overrideObj.addProperty("model", "slurpbags:item/" + item.getType().getName() + "_bag_open");
+                    overrideObj.addProperty("model", "slurpbags:" + getBagName(item, true));
                     overridesObj.add(overrideObj);
                 }
                 modelObj.add("overrides", overridesObj);
@@ -45,7 +45,7 @@ public class SlurpBagModel {
             return modelObj;
         });
 
-        output.accept(SlurpBags.id("item/" + item.getType().getName() + "_bag_open"), () ->
+        output.accept(SlurpBags.id(getBagName(item, true)), () ->
             buildBase(item, true));
     }
 
@@ -54,10 +54,28 @@ public class SlurpBagModel {
         modelObj.addProperty("parent", "slurpbags:item/slurp_bag");
         {
             JsonObject texturesObj = new JsonObject();
-            texturesObj.addProperty("bag", "slurpbags:item/bag" + (open ? "_open" : ""));
-            texturesObj.addProperty("band", "slurpbags:item/" + item.getType().getName() + "_band" + (open ? "_open" : ""));
+            texturesObj.addProperty("bag", "slurpbags:" + getBagTextureName(item, open));
+            texturesObj.addProperty("band", "slurpbags:" + getBandName(item, open));
             modelObj.add("textures", texturesObj);
         }
         return modelObj;
+    }
+
+    private static String getBagName(SlurpBagItem item, boolean open) {
+        if (item.getColor() != null) {
+            return "item/" + item.getColor().getName() + "_" + item.getType().getName() + "_bag" + (open ? "_open" : "");
+        }
+        return "item/" + item.getType().getName() + "_bag" + (open ? "_open" : "");
+    }
+
+    private static String getBagTextureName(SlurpBagItem item, boolean open) {
+        if (item.getColor() != null) {
+            return "item/" + item.getColor().getName() + "_bag" + (open ? "_open" : "");
+        }
+        return "item/bag" + (open ? "_open" : "");
+    }
+
+    private static String getBandName(SlurpBagItem item, boolean open) {
+        return "item/" + item.getType().getName() + "_band" + (open ? "_open" : "");
     }
 }

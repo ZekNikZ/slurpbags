@@ -1,0 +1,15 @@
+{
+  "parent": "slurpbags:item/slurp_bag",
+  "overrides": [
+    {
+      "model": "slurpbags:item/lime_dye_bag_open",
+      "predicate": {
+        "custom_model_data": 1
+      }
+    }
+  ],
+  "textures": {
+    "bag": "slurpbags:item/lime_bag",
+    "band": "slurpbags:item/dye_band"
+  }
+}

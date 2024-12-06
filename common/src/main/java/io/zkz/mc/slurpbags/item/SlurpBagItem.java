@@ -1,7 +1,7 @@
 package io.zkz.mc.slurpbags.item;
 
 import io.zkz.mc.slurpbags.inventory.LockableInventorySlot;
-import io.zkz.mc.slurpbags.inventory.SlurpBagInventory;
+import io.zkz.mc.slurpbags.inventory.SlurpBagContainer;
 import io.zkz.mc.slurpbags.inventory.SlurpBagMenu;
 import io.zkz.mc.slurpbags.networking.LockSlotMessage;
 import io.zkz.mc.slurpbags.networking.ModNetworking;
@@ -9,17 +9,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.*;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ItemUtils;
-import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,10 +27,12 @@ import java.util.stream.Stream;
 
 public class SlurpBagItem extends Item {
     private final BagType type;
+    private final @Nullable DyeColor color;
 
-    public SlurpBagItem(final BagType type) {
+    public SlurpBagItem(final BagType type, final @Nullable DyeColor color) {
         super(new Item.Properties().stacksTo(1));
         this.type = type;
+        this.color = color;
     }
 
     @Override
@@ -61,8 +60,8 @@ public class SlurpBagItem extends Item {
 
     private MenuProvider getMenuProvider(ItemStack stack) {
         return new SimpleMenuProvider((containerId, inventory, player) -> {
-            Container container = new SlurpBagInventory(stack, type);
-            return new SlurpBagMenu(this.type, containerId, inventory, container);
+            SlurpBagContainer container = new SlurpBagContainer(stack, type);
+            return new SlurpBagMenu(this.getType(), this.getColor(), containerId, inventory, container);
         }, stack.getHoverName());
     }
 
@@ -80,13 +79,17 @@ public class SlurpBagItem extends Item {
 
     @Override
     public void onDestroyed(ItemEntity itemEntity) {
-        SlurpBagInventory container = new SlurpBagInventory(itemEntity.getItem(), type);
+        SlurpBagContainer container = new SlurpBagContainer(itemEntity.getItem(), type);
         Stream<ItemStack> stream = container.getItems().stream().filter(Predicate.not(ItemStack::isEmpty));
         ItemUtils.onContainerDestroyed(itemEntity, stream);
     }
 
     public BagType getType() {
         return this.type;
+    }
+
+    public @Nullable DyeColor getColor() {
+        return this.color;
     }
 
     public BagMode getMode(ItemStack stack) {
@@ -127,5 +130,44 @@ public class SlurpBagItem extends Item {
                 bagItem.close(stack);
             }
         });
+    }
+
+    public boolean mayContain(ItemStack otherStack) {
+        return this.getType().mayContain(otherStack);
+    }
+
+    public boolean insertIntoBag(ItemStack bagStack, ItemStack stackToAdd) {
+        SlurpBagContainer bagInventory = new SlurpBagContainer(bagStack, type);
+        return bagInventory.insertItem(stackToAdd);
+    }
+
+    @Override
+    public void inventoryTick(ItemStack bagStack, Level level, Entity entity, int itemSlot, boolean isSelected) {
+        if (getMode(bagStack) != BagMode.SLURP_ALWAYS) {
+            return;
+        }
+
+        if (!(entity instanceof Player player)) {
+            return;
+        }
+
+        Inventory inventory = player.getInventory();
+        boolean didInsertSome = false;
+        for (int i = 0; i < inventory.getContainerSize(); i++) {
+            ItemStack stackInSlot = inventory.getItem(i);
+            if (i != itemSlot && this.mayContain(stackInSlot)) {
+                if (this.insertIntoBag(bagStack, stackInSlot)) {
+                    didInsertSome = true;
+                }
+            }
+        }
+
+        if (didInsertSome) {
+            SlurpBagMenu.updateIfMenuOpen(player);
+        }
+    }
+
+    public ItemStack getColoredItemStack(DyeColor dyeColor) {
+        return new ItemStack(getType().getItem(dyeColor));
     }
 }

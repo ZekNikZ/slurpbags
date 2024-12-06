@@ -15,7 +15,7 @@ public class ShulkerBoxTooltipCompat implements ShulkerBoxTooltipApi {
     @Override
     public void registerProviders(@NotNull PreviewProviderRegistry registry) {
         registry.register(new ResourceLocation(SlurpBags.MOD_ID, "slurp_bags"), new SlurpBagPreviewProvider(),
-            ModItems.BAG_ITEMS.values().stream().map(Supplier::get).map(item -> (Item) item).toList());
+            ModItems.BAG_ITEMS.values().stream().map(Supplier::get).map(Item::asItem).toList());
     }
 
     @ExpectPlatform

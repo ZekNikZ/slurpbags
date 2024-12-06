@@ -1,0 +1,15 @@
+{
+  "parent": "slurpbags:item/slurp_bag",
+  "overrides": [
+    {
+      "model": "slurpbags:item/magenta_potion_bag_open",
+      "predicate": {
+        "custom_model_data": 1
+      }
+    }
+  ],
+  "textures": {
+    "bag": "slurpbags:item/magenta_bag",
+    "band": "slurpbags:item/potion_band"
+  }
+}

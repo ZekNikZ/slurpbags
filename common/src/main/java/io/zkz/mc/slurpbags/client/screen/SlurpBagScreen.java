@@ -15,8 +15,12 @@ import org.jetbrains.annotations.Nullable;
 public class SlurpBagScreen extends AbstractContainerScreen<SlurpBagMenu> {
     private static final ResourceLocation CONTAINER_BACKGROUND = new ResourceLocation("textures/gui/container/generic_54.png");
 
+    private final SlurpBagMenu menu;
+
     public SlurpBagScreen(SlurpBagMenu menu, Inventory inventory, Component title) {
         super(menu, inventory, title);
+
+        this.menu = menu;
 
         this.imageHeight = 114 + menu.getInventoryRowCount() * 18;
         this.inventoryLabelY = this.imageHeight - 94;
@@ -39,7 +43,7 @@ public class SlurpBagScreen extends AbstractContainerScreen<SlurpBagMenu> {
     }
 
     private int getTextColor(@Nullable DyeColor dyeColor) {
-        if (dyeColor == null) {
+        if (dyeColor == null || dyeColor == DyeColor.WHITE || dyeColor == DyeColor.YELLOW) {
             return 0x404040;
         } else {
             return DyeColor.WHITE.getTextColor();
@@ -48,7 +52,7 @@ public class SlurpBagScreen extends AbstractContainerScreen<SlurpBagMenu> {
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        float[] backgroundColor = getBackgroundColor(DyeColor.RED);
+        float[] backgroundColor = getBackgroundColor(this.menu.getColor());
         RenderSystem.setShaderColor(backgroundColor[0], backgroundColor[1], backgroundColor[2], 1.0F);
 
         int i = (this.width - this.imageWidth) / 2;
@@ -65,7 +69,7 @@ public class SlurpBagScreen extends AbstractContainerScreen<SlurpBagMenu> {
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int i, int j) {
-        int textColor = getTextColor(DyeColor.RED);
+        int textColor = getTextColor(this.menu.getColor());
         guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, textColor, false);
         guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, textColor, false);
     }
